@@ -3,6 +3,7 @@ import "./App.css";
 import RecipeGrid from "./components/RecipeGrid";
 import Modal from "./components/Modal";
 import AddEditRecipeForm from "./components/AddEditRecipeForm";
+import LoadingSpinner from "./components/LoadingSpinner";
 import {
   getRecipes,
   createRecipe,
@@ -11,24 +12,30 @@ import {
 } from "./recipesService";
 
 function App() {
-  const [recipes, setRecipes] = React.useState(() => {
-    fetchRecipes();
-
-    return [];
-  });
   const [
     isShowingAddEditRecipeModal,
     setIsShowingAddEditRecipeModal,
   ] = React.useState(false);
   const [currentRecipe, setIsCurrentRecipe] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [recipes, setRecipes] = React.useState(() => {
+    fetchRecipes();
+
+    return [];
+  });
 
   function fetchRecipes() {
+    setIsLoading(true);
+
     getRecipes()
       .then((response) => {
         setRecipes(response.data);
       })
       .catch((error) => {
         debugger;
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -96,6 +103,8 @@ function App() {
       ) : null}
 
       <h1>Austins Recipe Book</h1>
+      {isLoading ? <LoadingSpinner isLoading={isLoading} /> : null}
+
       <RecipeGrid recipes={recipes} handleEditRecipe={handleEditRecipe} />
     </div>
   );
