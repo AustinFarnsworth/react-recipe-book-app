@@ -96,7 +96,6 @@ function AddEditRecipeForm({
           Ingredients<span className="required">*</span>:
           <input
             type="text"
-            className="ingredients-list"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
             className={errors.ingredients ? "invalid" : ""}
@@ -109,7 +108,6 @@ function AddEditRecipeForm({
           Instructions<span className="required">*</span>:
           <input
             type="text"
-            className="instructions-list"
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
             className={errors.instructions ? "invalid" : ""}

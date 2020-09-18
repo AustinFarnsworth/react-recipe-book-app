@@ -1,5 +1,4 @@
 import axios from "axios";
-import Recipe from "./components/Recipe";
 
 // URL for our node express running locally
 // const BASE_URL = "http://localhost:3003";
