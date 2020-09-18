@@ -2,11 +2,25 @@ import React from "react";
 import "./AddEditRecipeForm.css";
 import categories from "../categories.json";
 
-function AddEditRecipeForm({ handleCloseModal, handleCreateRecipe }) {
-  const [name, setName] = React.useState("");
-  const [ingredients, setIngredients] = React.useState("");
-  const [instructions, setInstructions] = React.useState("");
-  const [category, setCategory] = React.useState("");
+function AddEditRecipeForm({
+  handleCloseModal,
+  handleCreateRecipe,
+  existingRecipe,
+  handleUpdateRecipe,
+  handleDeleteRecipe,
+}) {
+  const [name, setName] = React.useState(
+    existingRecipe ? existingRecipe.name : ""
+  );
+  const [ingredients, setIngredients] = React.useState(
+    existingRecipe ? existingRecipe.ingredients : ""
+  );
+  const [instructions, setInstructions] = React.useState(
+    existingRecipe ? existingRecipe.instructions : ""
+  );
+  const [category, setCategory] = React.useState(
+    existingRecipe ? existingRecipe.category : ""
+  );
   const [errors, setErrors] = React.useState({
     name: null,
     ingredients: null,
@@ -57,12 +71,17 @@ function AddEditRecipeForm({ handleCloseModal, handleCreateRecipe }) {
       category: category,
     };
 
-    handleCreateRecipe(recipe);
+    if (existingRecipe) {
+      recipe._id = existingRecipe._id;
+      handleUpdateRecipe(recipe);
+    } else {
+      handleCreateRecipe(recipe);
+    }
   }
 
   return (
     <div className="add-edit-recipe-form">
-      <h1>Add Recipe</h1>
+      <h1>{existingRecipe ? "Edit Recipe" : "Create Recipe"}</h1>
       <form onSubmit={handleSubmit} className="recipe-form">
         <label>
           Recipe Name<span className="required">*</span>:
@@ -119,9 +138,14 @@ function AddEditRecipeForm({ handleCloseModal, handleCreateRecipe }) {
             <span className="required">{errors.category}</span>
           ) : null}
         </label>
-        <button>Save & Close</button>
+        <button>{existingRecipe ? "Save & Close" : "Create & Close"}</button>
       </form>
       <button onClick={handleCloseModal}>Close</button>
+      {existingRecipe ? (
+        <button onClick={() => handleDeleteRecipe(existingRecipe)}>
+          Delete
+        </button>
+      ) : null}
     </div>
   );
 }

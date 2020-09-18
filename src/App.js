@@ -3,7 +3,12 @@ import "./App.css";
 import RecipeGrid from "./components/RecipeGrid";
 import Modal from "./components/Modal";
 import AddEditRecipeForm from "./components/AddEditRecipeForm";
-import { getRecipes, createRecipe } from "./recipesService";
+import {
+  getRecipes,
+  createRecipe,
+  updateRecipe,
+  deleteRecipe,
+} from "./recipesService";
 
 function App() {
   const [recipes, setRecipes] = React.useState(() => {
@@ -14,7 +19,8 @@ function App() {
   const [
     isShowingAddEditRecipeModal,
     setIsShowingAddEditRecipeModal,
-  ] = React.useState(true);
+  ] = React.useState(false);
+  const [currentRecipe, setIsCurrentRecipe] = React.useState(null);
 
   function fetchRecipes() {
     getRecipes()
@@ -46,20 +52,51 @@ function App() {
       });
   }
 
+  function handleEditRecipe(recipe) {
+    setIsCurrentRecipe(recipe);
+    setIsShowingAddEditRecipeModal(true);
+  }
+
+  function handleUpdateRecipe(recipe) {
+    updateRecipe(recipe._id, recipe)
+      .then((response) => {
+        setIsShowingAddEditRecipeModal(false);
+        alert("Successfully Updated Recipe");
+        fetchRecipes();
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+  function handleDeleteRecipe(recipe) {
+    deleteRecipe(recipe._id)
+      .then((response) => {
+        setIsShowingAddEditRecipeModal(false);
+        alert("Succesfully Deleted Recipe");
+        fetchRecipes();
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+
   return (
     <div className="App">
       <button onClick={handleAddRecipeClick}>Add New Recipe</button>
       {isShowingAddEditRecipeModal ? (
         <Modal>
           <AddEditRecipeForm
+            existingRecipe={currentRecipe}
             handleCloseModal={handleCloseModal}
             handleCreateRecipe={handleCreateRecipe}
+            handleUpdateRecipe={handleUpdateRecipe}
+            handleDeleteRecipe={handleDeleteRecipe}
           />
         </Modal>
       ) : null}
 
       <h1>Austins Recipe Book</h1>
-      <RecipeGrid recipes={recipes} />
+      <RecipeGrid recipes={recipes} handleEditRecipe={handleEditRecipe} />
     </div>
   );
 }
