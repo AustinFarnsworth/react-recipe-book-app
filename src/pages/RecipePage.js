@@ -13,7 +13,6 @@ function RecipePage(props) {
       })
       .catch((error) => {
         alert(`No recipe with ID of '${recipeId}' exists`);
-        props.history.push("/");
       });
   }, [recipeId]);
 
