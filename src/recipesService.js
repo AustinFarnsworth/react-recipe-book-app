@@ -8,6 +8,10 @@ const getRecipes = () => {
   return axios.get(`${BASE_URL}/api/recipe`);
 };
 
+const getRecipe = (recipeId) => {
+  return axios.get(`${BASE_URL}/api/recipe/${recipeId},`);
+};
+
 const createRecipe = (recipe) => {
   return axios.post(`${BASE_URL}/api/recipe`, recipe);
 };
@@ -19,4 +23,4 @@ const updateRecipe = (recipeId, recipe) => {
 const deleteRecipe = (recipeId) => {
   return axios.delete(`${BASE_URL}/api/recipe/${recipeId}`);
 };
-export { getRecipes, createRecipe, updateRecipe, deleteRecipe };
+export { getRecipes, createRecipe, updateRecipe, deleteRecipe, getRecipe };

@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./App.scss";
 import RecipeGrid from "./components/RecipeGrid";
 import Modal from "./components/Modal";
 import AddEditRecipeForm from "./components/AddEditRecipeForm";
@@ -102,7 +102,7 @@ function App() {
         </Modal>
       ) : null}
 
-      <h1>Austins Recipe Book</h1>
+      <h1 className="App-header">Austins Recipe Book</h1>
       {isLoading ? <LoadingSpinner isLoading={isLoading} /> : null}
 
       <RecipeGrid recipes={recipes} handleEditRecipe={handleEditRecipe} />
